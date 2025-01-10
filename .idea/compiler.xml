@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="myblog-ddd-domain" />
+        <module name="myblog-ddd-infrastructure" />
+        <module name="myblog-ddd-starter" />
+        <module name="myblog-ddd-application" />
+        <module name="myblog-ddd-client" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="myblog-ddd-starter (1) (org.example)" target="1.5" />
+      <module name="myblog-ddd-starter (2) (org.wjx.myblog)" target="1.7" />
+      <module name="myblog-ddd-staterr" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
