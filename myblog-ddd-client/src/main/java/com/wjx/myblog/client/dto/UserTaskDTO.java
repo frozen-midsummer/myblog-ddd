@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 
 @Data
 public class UserTaskDTO extends DTO {
-//    @JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long taskId;
     private String username;
     private LocalDateTime createdTime;
