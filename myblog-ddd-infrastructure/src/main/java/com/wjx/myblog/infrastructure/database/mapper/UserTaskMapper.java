@@ -1,6 +1,6 @@
 package com.wjx.myblog.infrastructure.database.mapper;
 
-import com.wjx.myblog.infrastructure.database.dataobject.UserInfoDO;
+import com.wjx.myblog.infrastructure.database.dataobject.UserTaskDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author MybatisPlusGenerator
  * @since 2025-03-06
  */
-public interface UserInfoMapper extends BaseMapper<UserInfoDO> {
+public interface UserTaskMapper extends BaseMapper<UserTaskDO> {
 
 }

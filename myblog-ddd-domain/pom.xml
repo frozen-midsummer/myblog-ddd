@@ -12,5 +12,11 @@
     <artifactId>myblog-ddd-domain</artifactId>
     <packaging>jar</packaging>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.wjx.myblog</groupId>
+            <artifactId>myblog-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

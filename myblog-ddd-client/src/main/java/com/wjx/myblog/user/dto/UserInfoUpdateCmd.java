@@ -1,15 +1,15 @@
-package com.wjx.myblog.client.dto;
+package com.wjx.myblog.user.dto;
 
 import lombok.Data;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Data
 public class UserInfoUpdateCmd {
     private String id;
     private String username;
     private String sex;
-    private ZonedDateTime birthday;
+    private LocalDateTime birthday;
     private String location;
     private String skills;
     private String feelings;

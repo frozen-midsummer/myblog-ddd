@@ -1,15 +1,15 @@
-package com.wjx.myblog.client.dto;
+package com.wjx.myblog.user.dto;
 
 import lombok.Data;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Data
 public class RegisterCmd {
     private String username;
     private String password;
     private String sex;
-    private ZonedDateTime birthday;
+    private LocalDateTime birthday;
     private String location;
     private String skills;
     private String feelings;

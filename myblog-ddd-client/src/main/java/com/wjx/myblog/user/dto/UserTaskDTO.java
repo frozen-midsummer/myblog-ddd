@@ -1,11 +1,10 @@
-package com.wjx.myblog.client.dto;
+package com.wjx.myblog.user.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.wjx.common.dto.DTO;
+import com.wjx.common.result.dto.DTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Data
 public class UserTaskDTO extends DTO {
@@ -14,7 +13,7 @@ public class UserTaskDTO extends DTO {
     private String username;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
-    private ZonedDateTime deadline;
+    private LocalDateTime deadline;
     private String description;
     private String alarm;
 }

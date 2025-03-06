@@ -1,6 +1,6 @@
 package com.wjx.myblog.infrastructure.database.convertor;
 
-import com.wjx.myblog.client.dto.UserTaskDTO;
+import com.wjx.myblog.user.dto.UserTaskDTO;
 import com.wjx.myblog.infrastructure.database.dataobject.UserTaskDO;
 import org.mapstruct.Mapper;
 

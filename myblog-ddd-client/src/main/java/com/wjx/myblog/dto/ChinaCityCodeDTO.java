@@ -1,7 +1,7 @@
-package com.wjx.myblog.client.dto;
+package com.wjx.myblog.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.wjx.common.dto.DTO;
+import com.wjx.common.result.dto.DTO;
 import lombok.Data;
 
 @Data

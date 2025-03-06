@@ -1,6 +1,6 @@
-package com.wjx.myblog.client.dto;
+package com.wjx.myblog.user.dto;
 
-import com.wjx.common.dto.DTO;
+import com.wjx.common.result.dto.DTO;
 import lombok.Data;
 
 @Data

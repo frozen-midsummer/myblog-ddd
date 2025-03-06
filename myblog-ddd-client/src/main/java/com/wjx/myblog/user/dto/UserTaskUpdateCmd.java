@@ -1,13 +1,13 @@
-package com.wjx.myblog.client.dto;
+package com.wjx.myblog.user.dto;
 
 import lombok.Data;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Data
 public class UserTaskUpdateCmd {
     private String taskId;
-    private ZonedDateTime deadline;
+    private LocalDateTime deadline;
     private String description;
     private String alarm;
 }
