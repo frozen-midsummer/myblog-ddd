@@ -1,39 +1,41 @@
 package com.wjx.myblog.infrastructure.database.dataobject;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.wjx.common.dto.DTO;
-import lombok.Data;
-import lombok.NonNull;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
-import org.springframework.cglib.core.Local;
-
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@TableName("usertasks")
-public class UserTaskDO {
-    @NonNull
-    @TableId(type = IdType.AUTO)
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author MybatisPlusGenerator
+ * @since 2025-03-06
+ */
+@Getter
+@Setter
+@TableName("myblog_user_task")
+public class UserTaskDO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @TableId("task_id")
     private Long taskId;
-    @NonNull
-    @TableField("username")
+
+    private Long userId;
+
     private String username;
-    @NonNull
-    @TableField("created_time")
+
     private LocalDateTime createdTime;
-    @NonNull
-    @TableField("updated_time")
+
     private LocalDateTime updatedTime;
-    @NonNull
-    @TableField("deadline")
-    private ZonedDateTime deadline;
-    @NonNull
+
+    private LocalDateTime deadline;
+
     private String description;
-    @NonNull
+
     private String alarm;
 }

@@ -1,6 +1,6 @@
 package com.wjx.myblog.infrastructure.database.convertor;
 
-import com.wjx.myblog.client.dto.ChinaCityCodeDTO;
+import com.wjx.myblog.dto.ChinaCityCodeDTO;
 import com.wjx.myblog.infrastructure.database.dataobject.ChinaCityCodeDO;
 import org.mapstruct.Mapper;
 
