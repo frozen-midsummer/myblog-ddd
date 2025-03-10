@@ -2,6 +2,7 @@ package com.wjx.myblog.domain.userinfo;
 
 import com.wjx.common.domain.AggregateRoot;
 import com.wjx.myblog.domain.userinfo.entity.UserTask;
+import com.wjx.myblog.domain.userinfo.param.UpdateParamObj;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -18,8 +19,17 @@ public class UserInfo extends AggregateRoot<Long> {
     private String skills;
     private String feelings;
     private String description;
-
     private List<UserTask> userTasks;
+
+    public void updateInfo(UpdateParamObj updateParamObj) {
+        this.username = updateParamObj.getUsername();
+        this.sex = updateParamObj.getSex();
+        this.birthday = updateParamObj.getBirthday();
+        this.location = updateParamObj.getLocation();
+        this.skills = updateParamObj.getSkills();
+        this.feelings = updateParamObj.getFeelings();
+        this.description = updateParamObj.getDescription();
+    }
 
     public void raiseTask(UserTask userTask) {
         userTask.setArInfo(this);

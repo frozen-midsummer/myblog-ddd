@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf().disable() // 禁用CSRF保护，根据实际情况可能需要调整
                 .authorizeRequests() // 开始配置请求授权规则
-                .antMatchers("/token/login", "/user/register", "/weather/*").permitAll() // 允许所有人访问/authenticate端点
+                .antMatchers("/user/login", "/user/register", "/weather/*").permitAll() // 允许所有人访问/authenticate端点
                 .anyRequest().authenticated() // 其他所有请求都需要认证
                 .and()
                 .sessionManagement() // 配置会话管理

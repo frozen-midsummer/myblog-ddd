@@ -1,13 +1,13 @@
-package com.wjx.myblog.user.dto;
+package com.wjx.myblog.userinfo.dto;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class UserInfoUpdateCmd {
-    private String id;
+public class RegisterCmd {
     private String username;
+    private String password;
     private String sex;
     private LocalDateTime birthday;
     private String location;
