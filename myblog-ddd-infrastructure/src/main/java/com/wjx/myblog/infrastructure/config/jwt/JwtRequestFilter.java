@@ -1,5 +1,6 @@
 package com.wjx.myblog.infrastructure.config.jwt;
 
+import com.wjx.common.rpc.BaseService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -25,6 +27,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -53,8 +58,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 logger.error("Unable to get JWT Token");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("text/plain;charset=UTF-8");
+                response.getWriter().write("Unable to get JWT Token");
+                return;
             } catch (ExpiredJwtException e) {
                 logger.error("JWT Token has expired");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("text/plain;charset=UTF-8");
+                response.getWriter().write("JWT Token has expired");
+                return;
             }
         } else {
             logger.warn("JWT Token does not begin with Bearer String");

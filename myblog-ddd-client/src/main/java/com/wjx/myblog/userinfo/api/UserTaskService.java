@@ -1,4 +1,4 @@
-package com.wjx.myblog.user.api;
+package com.wjx.myblog.userinfo.api;
 
 public interface UserTaskService {
 }

@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum MyblogErrorCodeEnum {
-    USER_NOT_FOUND(2000),
+    RECORD_NOT_FOUND(2000),
+    RECORD_DUPLICATE(20001),
+    INCORRECT_CREDENTIAL(20002),
     ;
 
     private final int code;

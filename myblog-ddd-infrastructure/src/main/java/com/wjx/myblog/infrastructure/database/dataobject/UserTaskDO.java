@@ -27,8 +27,6 @@ public class UserTaskDO implements Serializable {
 
     private Long userId;
 
-    private String username;
-
     private LocalDateTime createdTime;
 
     private LocalDateTime updatedTime;

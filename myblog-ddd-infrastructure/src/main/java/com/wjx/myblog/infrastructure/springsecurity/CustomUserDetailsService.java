@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .eq(UserInfoDO::getUsername, username);
         UserInfoDO userInfo = userInfoMapper.selectOne(queryWrapper);
         if (userInfo == null) {
-            throw new SystemException(MyblogErrorCodeEnum.USER_NOT_FOUND.code(), "User not found with username: " + username);
+            throw new SystemException(MyblogErrorCodeEnum.RECORD_NOT_FOUND.code(), "User not found with username: " + username);
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER")); // 假定所有用户都具有ROLE_USER权限

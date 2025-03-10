@@ -1,4 +1,4 @@
-package com.wjx.myblog.user.dto;
+package com.wjx.myblog.userinfo.dto;
 
 import lombok.Data;
 
