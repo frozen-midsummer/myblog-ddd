@@ -1,4 +1,4 @@
-package com.wjx.myblog.dto;
+package com.wjx.myblog.weather.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.wjx.common.result.dto.DTO;

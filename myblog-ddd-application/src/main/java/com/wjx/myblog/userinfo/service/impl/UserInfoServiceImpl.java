@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/userInfo")
 public class UserInfoServiceImpl extends BaseService implements UserInfoService {
     @Autowired
     private AuthenticationManager authenticationManager;

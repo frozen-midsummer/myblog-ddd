@@ -5,6 +5,7 @@ import com.wjx.myblog.domain.userinfo.entity.UserTask;
 import com.wjx.myblog.domain.userinfo.param.UpdateParamObj;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class UserInfo extends AggregateRoot<Long> {
     private String username;
     private String password;
     private String sex;
-    private LocalDateTime birthday;
+    private LocalDate birthday;
     private String location;
     private String skills;
     private String feelings;
@@ -31,9 +32,11 @@ public class UserInfo extends AggregateRoot<Long> {
         this.description = updateParamObj.getDescription();
     }
 
-    public void raiseTask(UserTask userTask) {
+    public UserTask raiseTask(LocalDateTime deadline, String desc, String alarm) {
+        UserTask userTask = new UserTask(deadline, desc, alarm);
         userTask.setArInfo(this);
         allTasks().add(userTask);
+        return userTask;
     }
 
     public void clearTasks() {

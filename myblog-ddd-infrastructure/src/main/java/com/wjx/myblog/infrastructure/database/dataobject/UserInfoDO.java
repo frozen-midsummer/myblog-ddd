@@ -3,6 +3,8 @@ package com.wjx.myblog.infrastructure.database.dataobject;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
