@@ -6,6 +6,7 @@ import com.wjx.common.result.result.ApiResult;
 import com.wjx.common.rpc.BaseService;
 import com.wjx.common.utils.LongUtil;
 import com.wjx.common.utils.SnowflakeIdGenerator;
+import com.wjx.myblog.domain.common.MyblogErrorCodeEnum;
 import com.wjx.myblog.domain.userinfo.UserInfo;
 import com.wjx.myblog.domain.userinfo.UserInfoDomainService;
 import com.wjx.myblog.domain.userinfo.entity.UserTask;
@@ -31,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 @RestController
 @RequestMapping("/userTask")
 public class UserTaskServiceImpl extends BaseService implements UserTaskService {
@@ -67,14 +69,15 @@ public class UserTaskServiceImpl extends BaseService implements UserTaskService 
     @PostMapping("/insertTask")
     public ResponseEntity<ApiResult<UserTaskDTO>> insertTask(HttpServletRequest request, @RequestBody UserTaskCreateCmd createCmd) {
         String requestTokenHeader = request.getHeader("Authorization");
-        if (requestTokenHeader != null) {
-            String jwtToken = requestTokenHeader.substring(7);
-            String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-            UserInfo userInfo = userInfoGateway.getByUsername(username);
+        if (requestTokenHeader == null) {
+            return ResponseEntity.ok(fail(MyblogErrorCodeEnum.EMPTY_TOKEN.code(), "请求token为空！"));
         }
-        UserTask res = userInfoDomainService.addTask(createCmd.getDeadline(), createCmd.getDescription(), createCmd.getAlarm());
-        userTaskMapper.insert(userTaskConvertor.toDataObject(res));
-        return ResponseEntity.ok(ok(userTaskConvertor.toDataTransferObj(res)));
+        String jwtToken = requestTokenHeader.substring(7);
+        String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        UserInfo userInfo = userInfoGateway.getByUsername(username);
+        UserTask userTask = userInfo.raiseTask(createCmd.getDeadline(), createCmd.getDescription(), createCmd.getAlarm());
+        userTaskMapper.insert(userTaskConvertor.toDataObject(userTask));
+        return ResponseEntity.ok(ok(userTaskConvertor.toDataTransferObj(userTask)));
     }
 
     @PostMapping("/deleteTask")

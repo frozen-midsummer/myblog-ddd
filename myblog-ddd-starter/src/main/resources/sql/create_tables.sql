@@ -1,7 +1,6 @@
 CREATE TABLE myblog_user_task (
     task_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
-    username VARCHAR(255),
     created_time DATETIME,
     updated_time DATETIME,
     deadline DATETIME,
