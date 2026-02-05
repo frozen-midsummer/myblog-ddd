@@ -1,3 +1,5 @@
+USE myblog;
+TRUNCATE TABLE myblog_china_city_code;
 INSERT INTO myblog_china_city_code (name, ad_code, city_code) VALUES ('北京市', 110000, 10);
 INSERT INTO myblog_china_city_code (name, ad_code, city_code) VALUES ('东城区', 110101, 10);
 INSERT INTO myblog_china_city_code (name, ad_code, city_code) VALUES ('西城区', 110102, 10);
