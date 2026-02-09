@@ -36,3 +36,9 @@ build/
 .env
 .env.*
 *.local
+
+# CodeGen (Contains DB secrets)
+UserInfoCodeGen.java
+
+# Test configurations
+src/test/resources/application.yml
