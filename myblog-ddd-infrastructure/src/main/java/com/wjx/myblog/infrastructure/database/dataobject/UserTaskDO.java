@@ -36,4 +36,6 @@ public class UserTaskDO implements Serializable {
     private String description;
 
     private String alarm;
+    
+    private Integer status;
 }

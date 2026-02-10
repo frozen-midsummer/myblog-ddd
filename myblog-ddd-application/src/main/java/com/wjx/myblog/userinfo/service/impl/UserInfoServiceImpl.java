@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.wjx.common.exception.SystemException;
 import com.wjx.common.result.result.ApiResult;
 import com.wjx.common.rpc.BaseService;
+import com.wjx.common.utils.LongUtil;
 import com.wjx.myblog.domain.common.MyblogErrorCodeEnum;
 import com.wjx.myblog.domain.userinfo.UserInfo;
 import com.wjx.myblog.domain.userinfo.UserInfoDomainService;
@@ -103,15 +104,36 @@ public class UserInfoServiceImpl extends BaseService implements UserInfoService 
     @Override
     @PostMapping("/modify")
     public ApiResult<UserInfoDTO> modify(@RequestBody UserInfoUpdateCmd updateCmd) {
-        UserInfo userInfo = userInfoGateway.getByUsername(updateCmd.getUsername());
-        boolean usernameChanged = userInfo.getUsername().equals(updateCmd.getUsername());
+        if (updateCmd.getId() == null || updateCmd.getId().isEmpty()) {
+            throw new SystemException(MyblogErrorCodeEnum.PARAM_ERROR.code(), "用户ID不能为空！");
+        }
+
+        UserInfo userInfo = userInfoGateway.getById(LongUtil.convertStr2Long(updateCmd.getId()));
+
+        if (userInfo == null) {
+            throw new SystemException(MyblogErrorCodeEnum.RECORD_NOT_FOUND.code(), "用户不存在！");
+        }
+
+        String oldUsername = userInfo.getUsername();
+        boolean usernameChanged = !oldUsername.equals(updateCmd.getUsername());
+
+        // 如果用户名发生变化，检查新用户名是否已存在
+        if (usernameChanged && userInfoGateway.isUsernameExist(updateCmd.getUsername())) {
+            throw new SystemException(MyblogErrorCodeEnum.RECORD_DUPLICATE.code(), "用户名已存在！");
+        }
+
         UpdateParamObj updateParamObj = userInfoCmdConvertor.toUpdateParamObj(updateCmd);
         userInfoDomainService.updateInfo(userInfo, updateParamObj);
+
         UserInfoDTO res;
         if (usernameChanged) {
-            res = userInfoGateway.modify(userInfo);
-        } else {
             res = userInfoGateway.modifyUsername(userInfo);
+            // 生成新 Token
+            UserDetails userDetails = userDetailsService.loadUserByUsername(res.getUsername());
+            String newToken = jwtTokenUtil.generateToken(userDetails);
+            res.setToken(newToken);
+        } else {
+            res = userInfoGateway.modify(userInfo);
         }
         return ok(res);
     }

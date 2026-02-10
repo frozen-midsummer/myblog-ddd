@@ -10,6 +10,7 @@ public enum MyblogErrorCodeEnum {
     RECORD_DUPLICATE(20001),
     INCORRECT_CREDENTIAL(20002),
     EMPTY_TOKEN(20003),
+    PARAM_ERROR(20004),
     ;
 
     private final int code;

@@ -33,14 +33,16 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new SystemException(MyblogErrorCodeEnum.RECORD_NOT_FOUND.code(), "User not found with username: " + username);
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER")); // 假定所有用户都具有ROLE_USER权限
-        return User.withUsername(userInfo.getUsername())
-                .password(userInfo.getPassword()) // 从数据库获取并解码
-                .authorities(authorities) // 即便只有一个权限也需提供列表
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .disabled(false)
-                .build();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return new SecurityUser(
+                userInfo.getId(),
+                userInfo.getUsername(),
+                userInfo.getPassword(),
+                true,
+                true,
+                true,
+                true,
+                authorities
+        );
     }
 }

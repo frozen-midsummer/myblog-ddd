@@ -28,6 +28,9 @@ security:
   jwt:
     secret-key: ${SECURITY_JWT_SECRET_KEY}
 
+amap:
+  key: ${AMAP_KEY}
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 开启 SQL 日志输出

@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS myblog_user_task (
     deadline DATETIME,
     description VARCHAR(255),
     alarm VARCHAR(255),
+    status INT DEFAULT 0 COMMENT '0: pending, 1: completed',
     PRIMARY KEY (task_id),
     INDEX idx_user_id (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -33,3 +34,20 @@ CREATE TABLE IF NOT EXISTS myblog_user_info (
     PRIMARY KEY (id),
     UNIQUE KEY uk_username (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 为旧表添加 status 字段（如果不存在）
+SET @dbname = DATABASE();
+SET @tablename = 'myblog_user_task';
+SET @columnname = 'status';
+SET @preparedStatement = (SELECT IF(
+  (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+   WHERE TABLE_SCHEMA = @dbname
+     AND TABLE_NAME = @tablename
+     AND COLUMN_NAME = @columnname
+  ) > 0,
+  'SELECT 1',
+  'ALTER TABLE myblog_user_task ADD COLUMN status INT DEFAULT 0 COMMENT "0: pending, 1: completed"'
+));
+PREPARE stmt FROM @preparedStatement;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;

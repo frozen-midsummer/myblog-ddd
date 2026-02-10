@@ -13,6 +13,7 @@ public class UserTask extends DomainEntity<Long> {
     private LocalDateTime deadline;
     private String description;
     private String alarm;
+    private Integer status; // 0: pending, 1: completed
 
     public UserTask(LocalDateTime deadline, String desc, String alarm) {
         // 调父类构造方法
@@ -22,12 +23,14 @@ public class UserTask extends DomainEntity<Long> {
         this.deadline = deadline;
         this.description = desc;
         this.alarm = alarm;
+        this.status = 0;
     }
 
-    public void update(LocalDateTime deadline, String description, String alarm) {
+    public void update(LocalDateTime deadline, String description, String alarm, Integer status) {
         this.updatedTime = LocalDateTime.now();
         this.deadline = deadline;
         this.description = description;
         this.alarm = alarm;
+        this.status = status;
     }
 }

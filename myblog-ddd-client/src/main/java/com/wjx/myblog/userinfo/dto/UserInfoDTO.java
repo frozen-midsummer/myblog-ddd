@@ -1,5 +1,6 @@
 package com.wjx.myblog.userinfo.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.wjx.common.result.dto.DTO;
 import lombok.Data;
@@ -13,9 +14,11 @@ public class UserInfoDTO extends DTO {
     private Long id;
     private String username;
     private String sex;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
     private String location;
     private String skills;
     private String feelings;
     private String description;
+    private String token;
 }

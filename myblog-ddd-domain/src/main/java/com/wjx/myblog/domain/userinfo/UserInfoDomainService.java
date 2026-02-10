@@ -12,8 +12,8 @@ public class UserInfoDomainService {
         return new UserTask(deadline, desc, alarm);
     }
 
-    public void updateTask(UserTask userTask, LocalDateTime deadline, String desc, String alarm) {
-        userTask.update(deadline, desc, alarm);
+    public void updateTask(UserTask userTask, LocalDateTime deadline, String desc, String alarm, Integer status) {
+        userTask.update(deadline, desc, alarm, status);
     }
 
     public void updateInfo(UserInfo userInfo, UpdateParamObj updateParamObj) {

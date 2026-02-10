@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.wjx.common.exception.SystemException;
 import com.wjx.common.utils.LongUtil;
+import com.wjx.common.utils.SnowflakeIdGenerator;
 import com.wjx.myblog.domain.common.MyblogErrorCodeEnum;
 import com.wjx.myblog.domain.userinfo.UserInfoGateway;
 import com.wjx.myblog.domain.userinfo.UserInfo;
@@ -38,6 +39,11 @@ public class UserInfoGatewayImpl implements UserInfoGateway {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public UserInfo getById(Long id) {
+        UserInfoDO userInfoDO = userInfoMapper.selectById(id);
+        return userInfoConvertor.toUserInfo(userInfoDO);
+    }
+
     public UserInfo getByUsername(String username) {
         LambdaQueryWrapper<UserInfoDO> queryWrapper = Wrappers.lambdaQuery(UserInfoDO.class)
                 .eq(UserInfoDO::getUsername, username);
@@ -51,6 +57,9 @@ public class UserInfoGatewayImpl implements UserInfoGateway {
             throw new SystemException(MyblogErrorCodeEnum.RECORD_DUPLICATE.code(), "用户名已存在，请尝试其他用户名！");
         }
         UserInfoDO userInfoDO = userInfoConvertor.toUserInfoDO(userInfo);
+        if (userInfoDO.getId() == null) {
+            userInfoDO.setId(SnowflakeIdGenerator.newSnowflakeId());
+        }
         userInfoMapper.insert(userInfoDO);
     }
 
@@ -59,6 +68,7 @@ public class UserInfoGatewayImpl implements UserInfoGateway {
             throw new SystemException(MyblogErrorCodeEnum.RECORD_DUPLICATE.code(), "用户名已存在，请尝试其他用户名！");
         }
         UserInfoDO userInfoDO = userInfoConvertor.convertUserInfoDO(registerCmd);
+        userInfoDO.setId(SnowflakeIdGenerator.newSnowflakeId());
         userInfoDO.setPassword(passwordEncoder.encode(registerCmd.getPassword()));
         userInfoMapper.insert(userInfoDO);
     }
@@ -67,7 +77,11 @@ public class UserInfoGatewayImpl implements UserInfoGateway {
         if (!userInfoMapper.exists(Wrappers.lambdaQuery(UserInfoDO.class).eq(UserInfoDO::getId, userInfo.getId()))) {
             throw new SystemException(MyblogErrorCodeEnum.RECORD_NOT_FOUND.code(), "用户不存在！");
         }
-        if (isUsernameExist(userInfo.getUsername())) {
+        // 检查新用户名是否被其他用户占用
+        LambdaQueryWrapper<UserInfoDO> queryWrapper = Wrappers.lambdaQuery(UserInfoDO.class)
+                .eq(UserInfoDO::getUsername, userInfo.getUsername())
+                .ne(UserInfoDO::getId, userInfo.getId());
+        if (userInfoMapper.exists(queryWrapper)) {
             throw new SystemException(MyblogErrorCodeEnum.RECORD_DUPLICATE.code(), "用户名已存在，请尝试其他用户名！");
         }
         UserInfoDO userInfoDO = userInfoConvertor.toUserInfoDO(userInfo);
@@ -89,12 +103,9 @@ public class UserInfoGatewayImpl implements UserInfoGateway {
         return userTaskConvertor.toUserTask(userTaskDO);
     }
 
-    public List<UserTaskDTO> getTasksByUsername(String username) {
-        LambdaQueryWrapper<UserInfoDO> queryWrapper = Wrappers.lambdaQuery(UserInfoDO.class)
-                .eq(UserInfoDO::getUsername, username);
-        UserInfoDO userInfoDO = userInfoMapper.selectOne(queryWrapper);
+    public List<UserTaskDTO> getTasksByUserId(Long userId) {
         LambdaQueryWrapper<UserTaskDO> userTaskWrapper = Wrappers.lambdaQuery(UserTaskDO.class)
-                .eq(UserTaskDO::getUserId, userInfoDO.getId());
+                .eq(UserTaskDO::getUserId, userId);
         List<UserTaskDO> userTaskDOList = userTaskMapper.selectList(userTaskWrapper);
         return userTaskConvertor.convertUserTaskDTO(userTaskDOList);
     }

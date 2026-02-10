@@ -56,12 +56,13 @@ public class UserTaskServiceImpl extends BaseService implements UserTaskService 
     @PostMapping("/getTasks")
     public ResponseEntity<ApiResult<ArrayList<UserTaskDTO>>> getTasksByUsername(HttpServletRequest request, HttpServletResponse response) {
         String requestTokenHeader = request.getHeader("Authorization");
-        String username = null;
         List<UserTaskDTO> res = null;
         if (requestTokenHeader != null) {
             String jwtToken = requestTokenHeader.substring(7);
-            username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-            res = userInfoGateway.getTasksByUsername(username);
+            Long userId = jwtTokenUtil.getUserIdFromToken(jwtToken);
+            if (userId != null) {
+                res = userInfoGateway.getTasksByUserId(userId);
+            }
         }
         return ResponseEntity.ok(ok(res));
     }
@@ -73,8 +74,11 @@ public class UserTaskServiceImpl extends BaseService implements UserTaskService 
             return ResponseEntity.ok(fail(MyblogErrorCodeEnum.EMPTY_TOKEN.code(), "请求token为空！"));
         }
         String jwtToken = requestTokenHeader.substring(7);
-        String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-        UserInfo userInfo = userInfoGateway.getByUsername(username);
+        Long userId = jwtTokenUtil.getUserIdFromToken(jwtToken);
+        if (userId == null) {
+            return ResponseEntity.ok(fail(401, "Token无效或已过期"));
+        }
+        UserInfo userInfo = userInfoGateway.getById(userId);
         UserTask userTask = userInfo.raiseTask(createCmd.getDeadline(), createCmd.getDescription(), createCmd.getAlarm());
         userTaskMapper.insert(userTaskConvertor.toDataObject(userTask));
         return ResponseEntity.ok(ok(userTaskConvertor.toDataTransferObj(userTask)));
@@ -89,7 +93,7 @@ public class UserTaskServiceImpl extends BaseService implements UserTaskService 
     @PostMapping("/modifyTask")
     public ResponseEntity<ApiResult<UserTaskDTO>> modifyTask(HttpServletRequest request, @RequestBody UserTaskUpdateCmd updateCmd) {
         UserTask userTask = userInfoGateway.getTaskById(updateCmd.getTaskId());
-        userInfoDomainService.updateTask(userTask, updateCmd.getDeadline(), updateCmd.getDescription(), updateCmd.getAlarm());
+        userInfoDomainService.updateTask(userTask, updateCmd.getDeadline(), updateCmd.getDescription(), updateCmd.getAlarm(), updateCmd.getStatus());
         userTaskMapper.updateById(userTaskConvertor.toDataObject(userTask));
         return ResponseEntity.ok(ok(userTaskConvertor.toDataTransferObj(userTask)));
     }
